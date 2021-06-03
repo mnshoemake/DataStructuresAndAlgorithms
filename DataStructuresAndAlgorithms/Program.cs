@@ -6,180 +6,67 @@ namespace DataStructuresAndAlgorithms
 {
     class Program
     {
-        static Dictionary<string,Dictionary<string,int>> ProblemGraph = new Dictionary<string,Dictionary<string,int>>();
-        static Dictionary<string, int> Costs = new Dictionary<string, int>();
-        static Dictionary<string, string> Parents = new Dictionary<string, string>();
-        static List<string> Processed = new List<string>();
-
+        
         static void Main(string[] args)
         {
-            CreateProblemGraph();
-            CreateCostsGraph();
-            PrintGraph();
-            PrintCostsGraph();
-            CreateParentsGraph();
-            PrintParentsGraph();
-            FindShortestPathToFin();
-        }
+            //For now, using dijkstra's algorithm. In future, type of processor 
+            //used to get shortest path will depend on the type of graph used.
+            
+            //If Directed, Acyclic, Weighted, Use Dijkstra's
+            //If Unweighted, use Breadth-First
+            //Good use case for DI?
 
-        static void FindShortestPathToFin()
-        {
-            //Dijkstra's Algorithm
-            //1. Find the cheapest node
-            //2. Find the total cost to get to the neighbors of the cheapest node.
-            //      2a. If the total cost to get to a given neighbor, "N", is lower than the cost currently stored for "N,"
-            //          update the cost and parent node for "N." Repeat for all neighbors.
-            //3. Repeat steps 1 and 2 until every node in the graph has been processed.
-            //4. Calculate the final path.
 
-            //1. Find the cheapest node
-            string cheapestNode = FindCheapestNode(Costs);
+            DijkstraProcessor dijkstraProcessor = new DijkstraProcessor();
+
+            Dictionary<string, Dictionary<string, int>> problemGraph = CreateProblemGraph();
             
             
-            while (cheapestNode != "none")
-            {
-                var cost = Costs[cheapestNode];
-
-                //2. Find the total cost to get to the neighbors of the cheapest node.
-                var neighbors = ProblemGraph[cheapestNode];
-                foreach (string neighbor in neighbors.Keys)
-                {
-                    //2a. If the total cost to get to a given neighbor, "N", is lower than the cost currently stored for "N,"
-                    //      update the cost and parent node for "N." Repeat for all neighbors.
-                    var costToReachNeighbor = cost + neighbors[neighbor];
-                    if (Costs[neighbor] > costToReachNeighbor)
-                    {
-                        //Update cost/parent of neighbor
-                        Costs[neighbor] = costToReachNeighbor;
-                        Parents[neighbor] = cheapestNode;
-                    }
-                }
-                //3. Repeat steps 1 and 2 until every node in the graph has been processed (adding lost node to a list of processed nodes
-                //until list is completed;  at this point, FindCheapestNode will return "none".
-                Processed.Add(cheapestNode);
-                cheapestNode = FindCheapestNode(Costs);
-            }
-
-            //4. Calculate Final path.
-            //Parent table will contain the requisite links.
-            //Add Nodes from fin to start, then reverse order and print.
-
-
-            List<string> finalPath = new List<string>();
-            finalPath.Add("fin");
-
-            string nextNode = Parents["fin"];
-            finalPath.Add(nextNode);
-
-            while (nextNode != "start")
-            {
-                nextNode = Parents[nextNode]; 
-                finalPath.Add(nextNode);
-            }
-
-            //finalPath.Add("start");
-
-            //Print Final Path
-            finalPath.Reverse();
+            PrintProblemGraph(problemGraph);
+            //PrintCostsGraph(costs);
+            //PrintParentsGraph(parents);
+            
+            var solution = dijkstraProcessor.FindShortestPathToFin(problemGraph);
 
             Console.WriteLine();
             Console.WriteLine("========================Printing Final Path========================");
-            foreach (var node in finalPath)
-            {  
+            foreach (var node in solution)
+            {
                 Console.WriteLine(node);
             }
         }
 
+       
 
-        static string FindCheapestNode(Dictionary<string, int> costs)
+        static Dictionary<string, Dictionary<string, int>> CreateProblemGraph()
         {
-            string lowestCostNode = "none"; //default value; if no cheaper nodes are found, return "start" node.
-            int lowestCost = int.MaxValue; 
-            
-            foreach (var cost in costs)
-            {
-                if (cost.Value < lowestCost && !Processed.Contains(cost.Key))
-                {
-                    lowestCostNode = cost.Key; 
-                    lowestCost = cost.Value;        
-                }
-            }
-
-            return lowestCostNode;
-        }
-
-
-        static void CreateProblemGraph()
-        {
-            ProblemGraph.Clear();
+            var graph = new Dictionary<string, Dictionary<string, int>>();
 
             //Create list of all nodes.
-            ProblemGraph["start"] = new Dictionary<string, int>();
-            ProblemGraph["a"] = new Dictionary<string, int>();
-            ProblemGraph["b"] = new Dictionary<string, int>();
-            ProblemGraph["fin"] = new Dictionary<string, int>();
+            graph["start"] = new Dictionary<string, int>();
+            graph["a"] = new Dictionary<string, int>();
+            graph["b"] = new Dictionary<string, int>();
+            graph["fin"] = new Dictionary<string, int>();
 
             //Create subnodes and assign weights.
-            ProblemGraph["start"]["a"] = 6;
-            ProblemGraph["start"]["b"] = 2;
+            graph["start"]["a"] = 6;
+            graph["start"]["b"] = 2;
 
-            ProblemGraph["a"]["fin"] = 1;
+            graph["a"]["fin"] = 1;
 
-            ProblemGraph["b"]["a"] = 3;
-            ProblemGraph["b"]["fin"] = 5;
+            graph["b"]["a"] = 3;
+            graph["b"]["fin"] = 5;
 
-            
+            return graph;
         }
 
-        static void CreateCostsGraph()
-        {
-            Costs.Clear();
-            foreach(string key in ProblemGraph.Keys)
-            {
-                //No cost to get to start node from start, so not added to table.
-                if (key != "start")
-                {
-                    //At beginning, can only know costs of children of "start" node.
-                    if (ProblemGraph["start"].ContainsKey(key))
-                    {
-                        Costs[key] = ProblemGraph["start"][key];
-                    }
-                    //Costs of all other nodes effectively infinite.
-                    else
-                    {
-                        Costs[key] = int.MaxValue;
-                    }
-                }
-            }            
-        }
 
-        static void CreateParentsGraph()
-        {
-            Parents.Clear();
-            foreach (string key in ProblemGraph.Keys)
-            {
-                //No cost to get to start node from start, so not added to table.
-                if (key != "start")
-                {
-                    //At beginning, can only know costs of children of "start" node.
-                    if (ProblemGraph["start"].ContainsKey(key))
-                    {
-                        Parents[key] = "start";
-                    }
-                    //Costs of all other nodes effectively infinite.
-                    else
-                    {
-                        Parents[key] = "";
-                    }
-                }
-            }
-        }
 
-        static void PrintGraph()
+        static void PrintProblemGraph(Dictionary<string, Dictionary<string, int>> problemGraph)
         {
             Console.WriteLine("");
             Console.WriteLine("========================Printing Problem Graph========================");
-            foreach (var node in ProblemGraph)
+            foreach (var node in problemGraph)
             {
                 Console.WriteLine("MainNode: " + node.Key);
                 foreach (var subnode in node.Value)
@@ -191,11 +78,11 @@ namespace DataStructuresAndAlgorithms
             }
         }
 
-        static void PrintCostsGraph()
+        static void PrintCostsGraph(Dictionary<string, int> costs)
         {
             Console.WriteLine("");
             Console.WriteLine("========================Printing Costs Graph========================");
-            foreach (var node in Costs)
+            foreach (var node in costs)
             {
                 Console.WriteLine("DestinationNode: " + node.Key);
                 Console.WriteLine("     Cost: " + node.Value);
@@ -203,11 +90,11 @@ namespace DataStructuresAndAlgorithms
             }
         }
 
-        static void PrintParentsGraph()
+        static void PrintParentsGraph(Dictionary<string, string> parents)
         {
             Console.WriteLine("");
             Console.WriteLine("========================Printing Parents Graph========================");
-            foreach (var node in Parents)
+            foreach (var node in parents)
             {
                 Console.WriteLine("Node: " + node.Key);
                 Console.WriteLine("     Parent: " + node.Value);
