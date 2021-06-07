@@ -1,4 +1,3 @@
-C:\Users\Michael\source\repos\DataStructuresAndAlgorithms\DataStructuresAndAlgorithms\obj\Debug\netcoreapp3.1\DataStructuresAndAlgorithms.csprojAssemblyReference.cache
 C:\Users\Michael\source\repos\DataStructuresAndAlgorithms\DataStructuresAndAlgorithms\obj\Debug\netcoreapp3.1\DataStructuresAndAlgorithms.AssemblyInfoInputs.cache
 C:\Users\Michael\source\repos\DataStructuresAndAlgorithms\DataStructuresAndAlgorithms\obj\Debug\netcoreapp3.1\DataStructuresAndAlgorithms.AssemblyInfo.cs
 C:\Users\Michael\source\repos\DataStructuresAndAlgorithms\DataStructuresAndAlgorithms\obj\Debug\netcoreapp3.1\DataStructuresAndAlgorithms.csproj.CoreCompileInputs.cache
@@ -8,6 +7,7 @@ C:\Users\Michael\source\repos\DataStructuresAndAlgorithms\DataStructuresAndAlgor
 C:\Users\Michael\source\repos\DataStructuresAndAlgorithms\DataStructuresAndAlgorithms\bin\Debug\netcoreapp3.1\DataStructuresAndAlgorithms.runtimeconfig.dev.json
 C:\Users\Michael\source\repos\DataStructuresAndAlgorithms\DataStructuresAndAlgorithms\bin\Debug\netcoreapp3.1\DataStructuresAndAlgorithms.dll
 C:\Users\Michael\source\repos\DataStructuresAndAlgorithms\DataStructuresAndAlgorithms\bin\Debug\netcoreapp3.1\DataStructuresAndAlgorithms.pdb
+C:\Users\Michael\source\repos\DataStructuresAndAlgorithms\DataStructuresAndAlgorithms\obj\Debug\netcoreapp3.1\DataStructuresAndAlgorithms.csprojAssemblyReference.cache
 C:\Users\Michael\source\repos\DataStructuresAndAlgorithms\DataStructuresAndAlgorithms\obj\Debug\netcoreapp3.1\DataStructuresAndAlgorithms.dll
 C:\Users\Michael\source\repos\DataStructuresAndAlgorithms\DataStructuresAndAlgorithms\obj\Debug\netcoreapp3.1\DataStructuresAndAlgorithms.pdb
 C:\Users\Michael\source\repos\DataStructuresAndAlgorithms\DataStructuresAndAlgorithms\obj\Debug\netcoreapp3.1\DataStructuresAndAlgorithms.genruntimeconfig.cache

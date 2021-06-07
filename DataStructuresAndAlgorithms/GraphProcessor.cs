@@ -4,14 +4,29 @@ using System.Text;
 
 namespace DataStructuresAndAlgorithms
 {
-    class DijkstraProcessor
+    public class GraphProcessor
     {
         static List<string> processed = new List<string>();
 
-        public List<string> FindShortestPathToFin(Dictionary<string, Dictionary<string, int>> problemGraph)
+        public List<string> FindShortestPathToFin(Dictionary<string, Dictionary<string, int>> problemGraph, string startNodeKey, string endNodeKey)
         {
-            Dictionary<string, int> costs = CreateCostsGraph(problemGraph);
-            Dictionary<string, string> parents = CreateParentsGraph(problemGraph); 
+            //Dijsktra Overload
+            
+            //If Graph Values are Dictionaries, meaning there are at least 3 layers of data,
+            //the Graph is assumed to be Weighted. Thus, we apply Dijkstra's Algorithm in this
+            //overload.
+
+            //If the Graph Values are strings or collections of strings, then the Graph is
+            //assumed to be unweighted, and thus a different overload, applying a Breadth First
+            //Search is used.
+
+
+            Dictionary<string, int> costs = CreateCostsGraph(problemGraph, startNodeKey);
+            Dictionary<string, string> parents = CreateParentsGraph(problemGraph, startNodeKey);
+
+            PrintCostsGraph(costs);
+            PrintParentsGraph(parents);
+
             List<string> solution = new List<string>();
 
 
@@ -57,14 +72,13 @@ namespace DataStructuresAndAlgorithms
             //Parent table will contain the requisite links.
             //Add Nodes from fin to start, then reverse order and print.
 
-
            
-            solution.Add("fin");
+            solution.Add(endNodeKey);
 
-            string nextNode = parents["fin"];
+            string nextNode = parents[endNodeKey];
             solution.Add(nextNode);
 
-            while (nextNode != "start")
+            while (nextNode != startNodeKey)
             {
                 nextNode = parents[nextNode];
                 solution.Add(nextNode);
@@ -78,7 +92,7 @@ namespace DataStructuresAndAlgorithms
 
         static string FindCheapestNode(Dictionary<string, int> costs)
         {
-            string lowestCostNode = "none"; //default value; if no cheaper nodes are found, return "start" node.
+            string lowestCostNode = "none";
             int lowestCost = int.MaxValue;
 
             foreach (var cost in costs)
@@ -93,19 +107,19 @@ namespace DataStructuresAndAlgorithms
             return lowestCostNode;
         }
 
-        static Dictionary<string, int> CreateCostsGraph(Dictionary<string, Dictionary<string, int>> problemGraph)
+        static Dictionary<string, int> CreateCostsGraph(Dictionary<string, Dictionary<string, int>> problemGraph, string startNodeKey)
         {
             Dictionary<string, int> costs = new Dictionary<string, int>();
 
             foreach (string key in problemGraph.Keys)
             {
                 //No cost to get to start node from start, so not added to table.
-                if (key != "start")
+                if (key != startNodeKey)
                 {
                     //At beginning, can only know costs of children of "start" node.
-                    if (problemGraph["start"].ContainsKey(key))
+                    if (problemGraph[startNodeKey].ContainsKey(key))
                     {
-                        costs[key] = problemGraph["start"][key];
+                        costs[key] = problemGraph[startNodeKey][key];
                     }
                     //Costs of all other nodes effectively infinite.
                     else
@@ -118,18 +132,18 @@ namespace DataStructuresAndAlgorithms
             return costs;
         }
 
-        static Dictionary<string, string> CreateParentsGraph(Dictionary<string, Dictionary<string, int>> problemGraph)
+        static Dictionary<string, string> CreateParentsGraph(Dictionary<string, Dictionary<string, int>> problemGraph, string startNodeKey)
         {
             Dictionary<string, string> parents = new Dictionary<string, string>();
             foreach (string key in problemGraph.Keys)
             {
                 //No cost to get to start node from start, so not added to table.
-                if (key != "start")
+                if (key != startNodeKey)
                 {
                     //At beginning, can only know costs of children of "start" node.
-                    if (problemGraph["start"].ContainsKey(key))
+                    if (problemGraph[startNodeKey].ContainsKey(key))
                     {
-                        parents[key] = "start";
+                        parents[key] = startNodeKey;
                     }
                     //Costs of all other nodes effectively infinite.
                     else
@@ -139,6 +153,30 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return parents;
+        }
+
+        static void PrintCostsGraph(Dictionary<string, int> costs)
+        {
+            Console.WriteLine("");
+            Console.WriteLine("========================Printing Costs Graph========================");
+            foreach (var node in costs)
+            {
+                Console.WriteLine("DestinationNode: " + node.Key);
+                Console.WriteLine("     Cost: " + node.Value);
+
+            }
+        }
+
+        static void PrintParentsGraph(Dictionary<string, string> parents)
+        {
+            Console.WriteLine("");
+            Console.WriteLine("========================Printing Parents Graph========================");
+            foreach (var node in parents)
+            {
+                Console.WriteLine("Node: " + node.Key);
+                Console.WriteLine("     Parent: " + node.Value);
+
+            }
         }
 
 

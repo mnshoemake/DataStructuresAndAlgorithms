@@ -4,29 +4,26 @@ using System.Collections.Generic;
 
 namespace DataStructuresAndAlgorithms
 {
-    class Program
+    public class Program
     {
         
         static void Main(string[] args)
         {
-            //For now, using dijkstra's algorithm. In future, type of processor 
-            //used to get shortest path will depend on the type of graph used.
-            
             //If Directed, Acyclic, Weighted, Use Dijkstra's
             //If Unweighted, use Breadth-First
-            //Good use case for DI?
+            //Best approach: Just different overloads? DI? Polymorphism? 
 
-
-            DijkstraProcessor dijkstraProcessor = new DijkstraProcessor();
+            GraphProcessor graphProcessor = new GraphProcessor();
 
             Dictionary<string, Dictionary<string, int>> problemGraph = CreateProblemGraph();
             
             
             PrintProblemGraph(problemGraph);
+
             //PrintCostsGraph(costs);
             //PrintParentsGraph(parents);
             
-            var solution = dijkstraProcessor.FindShortestPathToFin(problemGraph);
+            var solution = graphProcessor.FindShortestPathToFin(problemGraph, "start", "fin");
 
             Console.WriteLine();
             Console.WriteLine("========================Printing Final Path========================");
@@ -74,32 +71,9 @@ namespace DataStructuresAndAlgorithms
                     Console.WriteLine("     DestinationNode: " + subnode.Key);
                     Console.WriteLine("     Weight: " + subnode.Value);
                 }
-
             }
         }
 
-        static void PrintCostsGraph(Dictionary<string, int> costs)
-        {
-            Console.WriteLine("");
-            Console.WriteLine("========================Printing Costs Graph========================");
-            foreach (var node in costs)
-            {
-                Console.WriteLine("DestinationNode: " + node.Key);
-                Console.WriteLine("     Cost: " + node.Value);
 
-            }
-        }
-
-        static void PrintParentsGraph(Dictionary<string, string> parents)
-        {
-            Console.WriteLine("");
-            Console.WriteLine("========================Printing Parents Graph========================");
-            foreach (var node in parents)
-            {
-                Console.WriteLine("Node: " + node.Key);
-                Console.WriteLine("     Parent: " + node.Value);
-
-            }
-        }
     }
 }
