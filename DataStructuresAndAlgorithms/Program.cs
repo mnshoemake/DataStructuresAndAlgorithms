@@ -33,8 +33,6 @@ namespace DataStructuresAndAlgorithms
             }
         }
 
-       
-
         static Dictionary<string, Dictionary<string, int>> CreateProblemGraph()
         {
             var graph = new Dictionary<string, Dictionary<string, int>>();
@@ -56,8 +54,6 @@ namespace DataStructuresAndAlgorithms
 
             return graph;
         }
-
-
 
         static void PrintProblemGraph(Dictionary<string, Dictionary<string, int>> problemGraph)
         {

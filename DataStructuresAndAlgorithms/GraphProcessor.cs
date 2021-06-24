@@ -20,6 +20,8 @@ namespace DataStructuresAndAlgorithms
             //assumed to be unweighted, and thus a different overload, applying a Breadth First
             //Search is used.
 
+            //ToDo: If any weights are negative, must use the Bellman-Ford Algorithm instead.
+
 
             Dictionary<string, int> costs = CreateCostsGraph(problemGraph, startNodeKey);
             Dictionary<string, string> parents = CreateParentsGraph(problemGraph, startNodeKey);
